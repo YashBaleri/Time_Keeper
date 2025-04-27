@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// Import the Clock and Settings components
+import Clock from "./components/Clock";
+import Settings from "./components/Settings";
 
+/**
+ * Main App component that serves as the root component of the application
+ * Renders the application layout and includes the Clock and Settings components
+ */
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // Main container div with styling for layout and typography
+    <div
+      style={{
+        textAlign: "center", // Center-aligns all content
+        padding: "20px", // Adds padding around the content
+        fontFamily: "Poppins, sans-serif", // Uses Poppins font with sans-serif fallback
+      }}
+    >
+      {/* Application title with clock emoji */}
+      <h1>🕰️ TimeBuddy</h1>
+
+      {/* Clock component that displays and updates current time */}
+      <Clock />
+
+      {/* Settings component for application configuration */}
+      <Settings />
+    </div>
+  );
 }
 
-export default App
+export default App;
