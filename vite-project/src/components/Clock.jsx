@@ -1,31 +1,66 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-/**
- * Clock component that displays and updates the current time every second
- */
-export default function Clock() {
-  // Initialize state with current time
-  const [time, setTime] = useState(new Date());
+export default function Clock({ showSeconds }) {
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    // Create an interval that updates the time every second
-    const timer = setInterval(() => {
-      setTime(new Date());
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
     }, 1000);
 
-    // Cleanup function to clear the interval when component unmounts
-    return () => {
-      clearInterval(timer);
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (date) => {
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+    return showSeconds
+      ? `${hours}:${minutes}:${seconds}`
+      : `${hours}:${minutes}`;
+  };
+
+  const formatDate = (date) => {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  }, []); // Empty dependency array means this effect runs only once on mount
+    return date.toLocaleDateString(undefined, options);
+  };
 
   return (
-    <div style={{ fontSize: "4rem", margin: "20px" }}>
-      {time.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      })}
+    <div
+      style={{
+        padding: "2rem",
+        textAlign: "center",
+        backgroundColor: "var(--surface)",
+        borderRadius: "8px",
+      }}
+    >
+      <div
+        style={{
+          fontSize: "4rem",
+          fontWeight: "700",
+          color: "var(--primary)",
+          textShadow: "0 0 10px rgba(var(--primary-rgb), 0.3)",
+          fontFamily: "var(--font-primary)",
+          letterSpacing: "2px",
+        }}
+      >
+        {formatTime(currentTime)}
+      </div>
+      <div
+        style={{
+          marginTop: "1rem",
+          fontSize: "1rem",
+          color: "var(--text-secondary)",
+          fontFamily: "var(--font-secondary)",
+        }}
+      >
+        {formatDate(currentTime)}
+      </div>
     </div>
   );
 }

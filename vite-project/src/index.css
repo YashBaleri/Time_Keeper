@@ -1,68 +1,253 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Default theme (Cyan) */
+  --primary: #00fff2;
+  --primary-dark: #00cccc;
+  --background: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface-light: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #888888;
+  --font-primary: "Orbitron", sans-serif;
+  --font-secondary: "Inter", sans-serif;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+/* White theme */
+[data-theme="white"] {
+  --primary: #000000;
+  --primary-dark: #333333;
+  --background: #ffffff;
+  --surface: #f5f5f5;
+  --surface-light: #e0e0e0;
+  --text: #000000;
+  --text-secondary: #666666;
 }
-a:hover {
-  color: #535bf2;
+
+/* Red theme */
+[data-theme="red"] {
+  --primary: #ff3b3b;
+  --primary-dark: #cc2e2e;
+}
+
+/* Orange theme */
+[data-theme="orange"] {
+  --primary: #ff7b00;
+  --primary-dark: #cc6200;
+}
+
+/* Green theme */
+[data-theme="green"] {
+  --primary: #00ff88;
+  --primary-dark: #00cc6d;
+}
+
+/* Purple theme */
+[data-theme="purple"] {
+  --primary: #b388ff;
+  --primary-dark: #8c6dcc;
+}
+
+/* Font themes */
+[data-font="classic"] {
+  --font-primary: "Roboto Mono", monospace;
+  --font-secondary: "Inter", sans-serif;
+}
+
+[data-font="modern"] {
+  --font-primary: "Space Grotesk", sans-serif;
+  --font-secondary: "Inter", sans-serif;
+}
+
+[data-font="tech"] {
+  --font-primary: "JetBrains Mono", monospace;
+  --font-secondary: "Inter", sans-serif;
+}
+
+[data-font="futuristic"] {
+  --font-primary: "Orbitron", sans-serif;
+  --font-secondary: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--background);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  background-image: radial-gradient(
+      circle at 100% 100%,
+      rgba(var(--primary-rgb), 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(var(--primary-rgb), 0.05) 0%,
+      transparent 50%
+    );
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
+select,
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font-family: "Inter", sans-serif;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.tech-border {
+  position: relative;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  padding: 1px;
+  overflow: hidden;
+}
+
+.tech-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--primary-rgb), 0.2),
+    transparent
+  );
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    left: -100%;
   }
-  a:hover {
-    color: #747bff;
+  100% {
+    left: 100%;
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
   }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.glow {
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.2);
+}
+
+/* High-tech select styling */
+select {
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--primary);
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+select:hover {
+  background-color: var(--surface-light);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  background-color: var(--surface);
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--primary);
+}
+
+input[type="checkbox"]:checked::before {
+  content: "✓";
+  position: absolute;
+  color: var(--background);
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Theme selector styling */
+.theme-selector {
+  display: flex;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.theme-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.theme-option:hover {
+  transform: scale(1.1);
+}
+
+.theme-option.active {
+  border-color: var(--text);
+  transform: scale(1.1);
+}
+
+/* Font selector styling */
+.font-selector {
+  display: flex;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.font-option {
+  padding: 8px 12px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: var(--surface);
+  color: var(--text);
+}
+
+.font-option:hover {
+  background-color: var(--surface-light);
+  transform: translateY(-2px);
+}
+
+.font-option.active {
+  background-color: var(--primary);
+  color: var(--background);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
 }
