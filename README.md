@@ -2,6 +2,8 @@
 
 A minimalist, elegant time management tool designed to help you stay aware of time passing and maintain focus throughout your day. Time Keeper provides gentle reminders at regular intervals, helping you manage your time effectively without being intrusive.
 
+🌐 [Live Demo](https://thetimekeeper.vercel.app)
+
 ## ✨ Features
 
 - **Clean, Modern Interface**: Beautiful design with multiple themes and fonts
@@ -12,6 +14,9 @@ A minimalist, elegant time management tool designed to help you stay aware of ti
 - **12/24 Hour Format**: Switch between time formats
 - **Seconds Display**: Optional seconds display
 - **Responsive Design**: Works seamlessly on all devices
+- **Resizable Interface**: Cards dynamically adjust to window size, perfect for split-screen use
+- **Mobile Optimized**: Fully functional on mobile devices with touch-friendly controls
+- **Flexible Layout**: Use it as a sidebar widget or full-screen application
 
 ## 🚀 Getting Started
 
@@ -25,7 +30,7 @@ A minimalist, elegant time management tool designed to help you stay aware of ti
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/time-keeper.git
+git clone https://github.com/YashBaleri/Time_Keeper.git
 cd time-keeper
 ```
 
