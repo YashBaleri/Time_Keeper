@@ -5,20 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 
 :root {
-  /* Default theme (Cyan) */
-  --primary: #00fff2;
-  --primary-dark: #00cccc;
-  --background: #0a0a0a;
-  --surface: #1a1a1a;
-  --surface-light: #2a2a2a;
-  --text: #ffffff;
-  --text-secondary: #888888;
-  --font-primary: "Orbitron", sans-serif;
-  --font-secondary: "Inter", sans-serif;
-}
-
-/* White theme */
-[data-theme="white"] {
+  /* Default theme (White) */
   --primary: #000000;
   --primary-dark: #333333;
   --background: #ffffff;
@@ -26,30 +13,63 @@
   --surface-light: #e0e0e0;
   --text: #000000;
   --text-secondary: #666666;
+  --font-primary: "Orbitron", sans-serif;
+  --font-secondary: "Inter", sans-serif;
+}
+
+/* Cyan theme */
+[data-theme="cyan"] {
+  --primary: #00fff2;
+  --primary-dark: #00cccc;
+  --background: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface-light: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #888888;
 }
 
 /* Red theme */
 [data-theme="red"] {
   --primary: #ff3b3b;
   --primary-dark: #cc2e2e;
+  --background: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface-light: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #888888;
 }
 
 /* Orange theme */
 [data-theme="orange"] {
   --primary: #ff7b00;
   --primary-dark: #cc6200;
+  --background: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface-light: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #888888;
 }
 
 /* Green theme */
 [data-theme="green"] {
   --primary: #00ff88;
   --primary-dark: #00cc6d;
+  --background: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface-light: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #888888;
 }
 
 /* Purple theme */
 [data-theme="purple"] {
   --primary: #b388ff;
   --primary-dark: #8c6dcc;
+  --background: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface-light: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #888888;
 }
 
 /* Font themes */

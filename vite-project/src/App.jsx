@@ -10,12 +10,15 @@ export default function App() {
   const [showSeconds, setShowSeconds] = useState(false);
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
   const [theme, setTheme] = useState("white");
-  const [font, setFont] = useState("futuristic");
+  const [font, setFont] = useState("modern");
+  const [is24Hour, setIs24Hour] = useState(false);
+  const [selectedTune, setSelectedTune] = useState("sci_fi");
 
   useEffect(() => {
     const savedShowSeconds = localStorage.getItem("showSeconds");
     const savedTheme = localStorage.getItem("theme");
     const savedFont = localStorage.getItem("font");
+    const saved24Hour = localStorage.getItem("is24Hour");
 
     if (savedShowSeconds !== null) {
       setShowSeconds(savedShowSeconds === "true");
@@ -23,10 +26,21 @@ export default function App() {
     if (savedTheme) {
       setTheme(savedTheme);
       document.documentElement.setAttribute("data-theme", savedTheme);
+    } else {
+      setTheme("white");
+      document.documentElement.setAttribute("data-theme", "white");
+      localStorage.setItem("theme", "white");
     }
     if (savedFont) {
       setFont(savedFont);
       document.documentElement.setAttribute("data-font", savedFont);
+    } else {
+      setFont("modern");
+      document.documentElement.setAttribute("data-font", "modern");
+      localStorage.setItem("font", "modern");
+    }
+    if (saved24Hour !== null) {
+      setIs24Hour(saved24Hour === "true");
     }
   }, []);
 
@@ -36,10 +50,27 @@ export default function App() {
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
-  const handleFontChange = (newFont) => {
+  const handleFontChange = (event) => {
+    const newFont = event.target.value;
     setFont(newFont);
     localStorage.setItem("font", newFont);
     document.documentElement.setAttribute("data-font", newFont);
+  };
+
+  const handle24HourChange = (newValue) => {
+    setIs24Hour(newValue);
+    localStorage.setItem("is24Hour", newValue);
+  };
+
+  const handleTuneChange = (event) => {
+    setSelectedTune(event.target.value);
+  };
+
+  const playTrialTune = () => {
+    const audio = new Audio(`/sounds/${selectedTune}.wav`);
+    audio.play().catch((error) => {
+      console.error("Error playing sound:", error);
+    });
   };
 
   return (
@@ -58,19 +89,38 @@ export default function App() {
         fontFamily: "var(--font-secondary)",
       }}
     >
-      <header style={{ textAlign: "center" }}>
+      <header
+        style={{
+          textAlign: "center",
+          marginBottom: "2rem",
+          position: "relative",
+          padding: "1rem 0",
+        }}
+      >
         <h1
           style={{
             fontFamily: "var(--font-primary)",
-            fontSize: "2rem",
-            letterSpacing: "2px",
+            fontSize: "3rem",
+            letterSpacing: "4px",
             color: "var(--primary)",
-            textShadow: "0 0 10px rgba(var(--primary-rgb), 0.3)",
-            marginBottom: "0.25rem",
+            textShadow: "0 0 20px rgba(var(--primary-rgb), 0.7)",
+            marginBottom: "0.5rem",
+            fontWeight: "800",
+            textTransform: "uppercase",
           }}
         >
-          Time Keeper
+          TIME KEEPER
         </h1>
+        <div
+          style={{
+            width: "80px",
+            height: "3px",
+            background: "var(--primary)",
+            margin: "0 auto",
+            opacity: 0.8,
+            borderRadius: "2px",
+          }}
+        />
       </header>
 
       <main
@@ -94,7 +144,11 @@ export default function App() {
           }}
         >
           <div className="tech-border glow">
-            <Clock showSeconds={showSeconds} />
+            <Clock
+              showSeconds={showSeconds}
+              is24Hour={is24Hour}
+              selectedTune={selectedTune}
+            />
           </div>
           <div style={{ marginTop: "1.5rem" }}>
             <Settings
@@ -102,6 +156,8 @@ export default function App() {
               setShowSeconds={setShowSeconds}
               showAdvancedSettings={showAdvancedSettings}
               setShowAdvancedSettings={setShowAdvancedSettings}
+              is24Hour={is24Hour}
+              setIs24Hour={handle24HourChange}
             />
           </div>
         </div>
@@ -170,36 +226,81 @@ export default function App() {
                 title="Purple Theme"
               />
             </div>
-            <div className="font-selector">
-              <div
-                className={`font-option ${font === "classic" ? "active" : ""}`}
-                onClick={() => handleFontChange("classic")}
-                style={{ fontFamily: "Roboto Mono, monospace" }}
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label
+                style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
+                  color: "var(--text-secondary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  fontSize: "0.8rem",
+                  fontFamily: "var(--font-secondary)",
+                }}
               >
-                Classic
-              </div>
-              <div
-                className={`font-option ${font === "modern" ? "active" : ""}`}
-                onClick={() => handleFontChange("modern")}
-                style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                Font
+              </label>
+              <select
+                value={font}
+                onChange={handleFontChange}
+                style={{ fontFamily: "var(--font-secondary)" }}
               >
-                Modern
-              </div>
-              <div
-                className={`font-option ${font === "tech" ? "active" : ""}`}
-                onClick={() => handleFontChange("tech")}
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
+                <option value="modern">Modern</option>
+                <option value="classic">Classic</option>
+                <option value="tech">Tech</option>
+                <option value="futuristic">Futuristic</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label
+                style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
+                  color: "var(--text-secondary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  fontSize: "0.8rem",
+                  fontFamily: "var(--font-secondary)",
+                }}
               >
-                Tech
-              </div>
+                Reminder Tone
+              </label>
               <div
-                className={`font-option ${
-                  font === "futuristic" ? "active" : ""
-                }`}
-                onClick={() => handleFontChange("futuristic")}
-                style={{ fontFamily: "Orbitron, sans-serif" }}
+                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
               >
-                Futuristic
+                <select
+                  value={selectedTune}
+                  onChange={handleTuneChange}
+                  style={{
+                    fontFamily: "var(--font-secondary)",
+                    flex: 1,
+                  }}
+                >
+                  <option value="sci_fi">Sci-Fi</option>
+                  <option value="happy_bells">Happy Bells</option>
+                  <option value="urgent_simple">Urgent Simple</option>
+                </select>
+                <button
+                  onClick={playTrialTune}
+                  style={{
+                    padding: "8px 16px",
+                    backgroundColor: "var(--primary)",
+                    color: "var(--background)",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    fontWeight: "600",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 0 15px rgba(var(--primary-rgb), 0.3)",
+                    fontFamily: "var(--font-secondary)",
+                  }}
+                >
+                  Play
+                </button>
               </div>
             </div>
           </div>
@@ -240,18 +341,67 @@ export default function App() {
           }}
         >
           <li style={{ marginBottom: "0.5rem" }}>
-            <span style={{ color: "var(--primary)" }}>15 minutes:</span> Perfect
-            for quick tasks and frequent check-ins
+            <span style={{ color: "var(--primary)" }}>15 minutes:</span>{" "}
+            Reminders will play at quarter-hour intervals (e.g., 1:00, 1:15,
+            1:30, 1:45)
           </li>
           <li style={{ marginBottom: "0.5rem" }}>
-            <span style={{ color: "var(--primary)" }}>30 minutes:</span> Ideal
-            for focused work sessions
+            <span style={{ color: "var(--primary)" }}>30 minutes:</span>{" "}
+            Reminders will play at half-hour intervals (e.g., 1:00, 1:30, 2:00)
           </li>
           <li>
-            <span style={{ color: "var(--primary)" }}>1 hour:</span> Great for
-            longer tasks and meetings
+            <span style={{ color: "var(--primary)" }}>1 hour:</span> Reminders
+            will play at the top of each hour (e.g., 1:00, 2:00, 3:00)
           </li>
         </ul>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          padding: "1.5rem",
+          backgroundColor: "var(--surface)",
+          borderRadius: "12px",
+          boxShadow: "0 0 20px rgba(0, 0, 0, 0.3)",
+          border: "1px solid rgba(var(--primary-rgb), 0.1)",
+          marginTop: "1rem",
+        }}
+      >
+        <h3
+          style={{
+            color: "var(--text-secondary)",
+            textTransform: "uppercase",
+            letterSpacing: "1px",
+            fontSize: "0.9rem",
+            marginBottom: "1rem",
+            fontFamily: "var(--font-secondary)",
+          }}
+        >
+          About Time Keeper
+        </h3>
+        <p
+          style={{
+            color: "var(--text-secondary)",
+            fontSize: "0.85rem",
+            lineHeight: "1.6",
+            marginBottom: "0.5rem",
+          }}
+        >
+          Time Keeper is a minimalist time management tool designed to help you
+          stay aware of time passing. It provides gentle reminders at regular
+          intervals to help you maintain focus and manage your time effectively.
+        </p>
+        <p
+          style={{
+            color: "var(--text-secondary)",
+            fontSize: "0.85rem",
+            lineHeight: "1.6",
+          }}
+        >
+          Customize your experience with different themes, fonts, and reminder
+          tones. Choose your preferred reminder frequency and enable/disable
+          sound notifications as needed.
+        </p>
       </div>
     </div>
   );

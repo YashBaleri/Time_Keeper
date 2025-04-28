@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Settings({
   showSeconds,
   setShowSeconds,
   showAdvancedSettings,
   setShowAdvancedSettings,
+  is24Hour,
+  setIs24Hour,
 }) {
   const [interval, setIntervalChoice] = useState(60);
   const [isSoundEnabled, setIsSoundEnabled] = useState(false);
@@ -33,10 +35,8 @@ export default function Settings({
     const diff = touchStart - currentTouch;
 
     if (diff > 50) {
-      // Swipe up
       setShowAdvancedSettings(false);
     } else if (diff < -50) {
-      // Swipe down
       setShowAdvancedSettings(true);
     }
   };
@@ -63,6 +63,11 @@ export default function Settings({
     localStorage.setItem("soundEnabled", newValue);
   }
 
+  function handle24HourToggle() {
+    const newValue = !is24Hour;
+    setIs24Hour(newValue);
+  }
+
   const getStatusMessage = () => {
     if (!isSoundEnabled) {
       return "🔕 Sound is currently OFF - No reminders will play";
@@ -81,29 +86,86 @@ export default function Settings({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div style={{ marginBottom: "1.5rem" }}>
-        <label
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          marginBottom: "1.5rem",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <label
+            style={{
+              display: "block",
+              marginBottom: "0.5rem",
+              color: "var(--text-secondary)",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: "0.8rem",
+              fontFamily: "var(--font-secondary)",
+            }}
+          >
+            Frequency
+          </label>
+          <select
+            value={interval}
+            onChange={handleIntervalChange}
+            style={{ fontFamily: "var(--font-secondary)" }}
+          >
+            <option value={15}>15 minutes</option>
+            <option value={30}>30 minutes</option>
+            <option value={60}>1 hour</option>
+          </select>
+        </div>
+        <button
+          onClick={handle24HourToggle}
           style={{
-            display: "block",
-            marginBottom: "0.5rem",
-            color: "var(--text-secondary)",
+            padding: "8px 16px",
+            backgroundColor: is24Hour
+              ? "var(--primary)"
+              : "var(--surface-light)",
+            color: is24Hour ? "var(--background)" : "var(--text)",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "0.9rem",
+            fontWeight: "600",
             textTransform: "uppercase",
             letterSpacing: "1px",
-            fontSize: "0.8rem",
+            transition: "all 0.3s ease",
+            boxShadow: is24Hour
+              ? "0 0 15px rgba(var(--primary-rgb), 0.3)"
+              : "none",
             fontFamily: "var(--font-secondary)",
           }}
         >
-          Reminder Frequency
-        </label>
-        <select
-          value={interval}
-          onChange={handleIntervalChange}
-          style={{ fontFamily: "var(--font-secondary)" }}
+          {is24Hour ? "24H" : "12H"}
+        </button>
+        <button
+          onClick={handleSoundToggle}
+          style={{
+            padding: "8px 16px",
+            backgroundColor: isSoundEnabled
+              ? "var(--primary)"
+              : "var(--surface-light)",
+            color: isSoundEnabled ? "var(--background)" : "var(--text)",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "0.9rem",
+            fontWeight: "600",
+            textTransform: "uppercase",
+            letterSpacing: "1px",
+            transition: "all 0.3s ease",
+            boxShadow: isSoundEnabled
+              ? "0 0 15px rgba(var(--primary-rgb), 0.3)"
+              : "none",
+            fontFamily: "var(--font-secondary)",
+          }}
         >
-          <option value={15}>15 minutes</option>
-          <option value={30}>30 minutes</option>
-          <option value={60}>1 hour</option>
-        </select>
+          {isSoundEnabled ? "🔔 ON" : "🔕 OFF"}
+        </button>
       </div>
 
       <div style={{ marginBottom: "1.5rem" }}>
@@ -127,46 +189,19 @@ export default function Settings({
         </label>
       </div>
 
-      <div style={{ marginBottom: "1.5rem" }}>
-        <button
-          onClick={handleSoundToggle}
-          style={{
-            padding: "12px 24px",
-            backgroundColor: isSoundEnabled
-              ? "var(--primary)"
-              : "var(--surface-light)",
-            color: isSoundEnabled ? "var(--background)" : "var(--text)",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            width: "100%",
-            fontSize: "1rem",
-            fontWeight: "600",
-            textTransform: "uppercase",
-            letterSpacing: "1px",
-            transition: "all 0.3s ease",
-            boxShadow: isSoundEnabled
-              ? "0 0 15px rgba(var(--primary-rgb), 0.3)"
-              : "none",
-            fontFamily: "var(--font-secondary)",
-          }}
-        >
-          {isSoundEnabled ? "🔔 Turn Sound OFF" : "🔕 Turn Sound ON"}
-        </button>
-        <div
-          style={{
-            color: isSoundEnabled ? "var(--primary)" : "var(--text-secondary)",
-            fontSize: "0.8rem",
-            marginTop: "0.5rem",
-            textAlign: "center",
-            fontFamily: "var(--font-secondary)",
-          }}
-        >
-          {getStatusMessage()}
-        </div>
+      <div
+        style={{
+          color: isSoundEnabled ? "var(--primary)" : "var(--text-secondary)",
+          fontSize: "0.8rem",
+          marginTop: "0.5rem",
+          textAlign: "center",
+          fontFamily: "var(--font-secondary)",
+        }}
+      >
+        {getStatusMessage()}
       </div>
 
-      {!showAdvancedSettings && (
+      {!showAdvancedSettings ? (
         <div
           style={{
             textAlign: "center",
@@ -181,7 +216,32 @@ export default function Settings({
           }}
           onClick={() => setShowAdvancedSettings(true)}
         >
-          <div>▼ Swipe down for more options</div>
+          <div>▼ Show Advanced Settings</div>
+          <div
+            style={{
+              width: "30px",
+              height: "2px",
+              backgroundColor: "var(--text-secondary)",
+              opacity: "0.5",
+            }}
+          />
+        </div>
+      ) : (
+        <div
+          style={{
+            textAlign: "center",
+            color: "var(--text-secondary)",
+            fontSize: "0.8rem",
+            marginTop: "1rem",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+          onClick={() => setShowAdvancedSettings(false)}
+        >
+          <div>▲ Hide Advanced Settings</div>
           <div
             style={{
               width: "30px",
