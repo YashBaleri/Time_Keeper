@@ -90,6 +90,7 @@ export default function Settings({
         style={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
           gap: "1rem",
           marginBottom: "1.5rem",
         }}
@@ -111,61 +112,94 @@ export default function Settings({
           <select
             value={interval}
             onChange={handleIntervalChange}
-            style={{ fontFamily: "var(--font-secondary)" }}
+            style={{
+              fontFamily: "var(--font-secondary)",
+              width: "100%",
+            }}
           >
             <option value={15}>15 minutes</option>
             <option value={30}>30 minutes</option>
             <option value={60}>1 hour</option>
           </select>
         </div>
-        <button
-          onClick={handle24HourToggle}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: is24Hour
-              ? "var(--primary)"
-              : "var(--surface-light)",
-            color: is24Hour ? "var(--background)" : "var(--text)",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "0.9rem",
-            fontWeight: "600",
-            textTransform: "uppercase",
-            letterSpacing: "1px",
-            transition: "all 0.3s ease",
-            boxShadow: is24Hour
-              ? "0 0 15px rgba(var(--primary-rgb), 0.3)"
-              : "none",
-            fontFamily: "var(--font-secondary)",
-          }}
-        >
-          {is24Hour ? "24H" : "12H"}
-        </button>
-        <button
-          onClick={handleSoundToggle}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: isSoundEnabled
-              ? "var(--primary)"
-              : "var(--surface-light)",
-            color: isSoundEnabled ? "var(--background)" : "var(--text)",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "0.9rem",
-            fontWeight: "600",
-            textTransform: "uppercase",
-            letterSpacing: "1px",
-            transition: "all 0.3s ease",
-            boxShadow: isSoundEnabled
-              ? "0 0 15px rgba(var(--primary-rgb), 0.3)"
-              : "none",
-            fontFamily: "var(--font-secondary)",
-          }}
-        >
-          {isSoundEnabled ? "🔔 ON" : "🔕 OFF"}
-        </button>
+        <div>
+          <label
+            style={{
+              display: "block",
+              marginBottom: "0.5rem",
+              color: "var(--text-secondary)",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: "0.8rem",
+              fontFamily: "var(--font-secondary)",
+            }}
+          >
+            Format
+          </label>
+          <button
+            onClick={handle24HourToggle}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: is24Hour
+                ? "var(--primary)"
+                : "var(--surface-light)",
+              color: is24Hour ? "var(--background)" : "var(--text)",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "0.9rem",
+              fontWeight: "600",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              transition: "all 0.3s ease",
+              boxShadow: is24Hour
+                ? "0 0 15px rgba(var(--primary-rgb), 0.3)"
+                : "none",
+              fontFamily: "var(--font-secondary)",
+            }}
+          >
+            {is24Hour ? "24H" : "12H"}
+          </button>
+        </div>
+        <div>
+          <label
+            style={{
+              display: "block",
+              marginBottom: "0.5rem",
+              color: "var(--text-secondary)",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: "0.8rem",
+              fontFamily: "var(--font-secondary)",
+            }}
+          >
+            Sound
+          </label>
+          <button
+            onClick={handleSoundToggle}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: isSoundEnabled
+                ? "var(--primary)"
+                : "var(--surface-light)",
+              color: isSoundEnabled ? "var(--background)" : "var(--text)",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "0.9rem",
+              fontWeight: "600",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              transition: "all 0.3s ease",
+              boxShadow: isSoundEnabled
+                ? "0 0 15px rgba(var(--primary-rgb), 0.3)"
+                : "none",
+              fontFamily: "var(--font-secondary)",
+            }}
+          >
+            {isSoundEnabled ? "🔔 ON" : "🔕 OFF"}
+          </button>
+        </div>
       </div>
 
       <div style={{ marginBottom: "1.5rem" }}>
