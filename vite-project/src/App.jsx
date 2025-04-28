@@ -84,7 +84,7 @@ export default function App() {
         gap: "1.5rem",
         background: "var(--background)",
         color: "var(--text)",
-        maxWidth: "500px",
+        maxWidth: "600px",
         margin: "0 auto",
         fontFamily: "var(--font-secondary)",
       }}
